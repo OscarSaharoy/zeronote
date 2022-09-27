@@ -1,0 +1,21 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body, #container {
+	width: 100vw;
+	height: 100vh;
+	overflow: none;
+	display: grid;
+	justify-items: stretch;
+	align-items: stretch;
+}
+
+svg#canvas {
+	background-color: white;	
+}
+
+#toolbox {
+	position: absolute;
+}
