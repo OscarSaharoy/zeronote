@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@500&display=swap" rel="stylesheet">
+    <link href="inverted-pendulum.css" rel="stylesheet">
+	<link rel="icon" href="zeronoteicon.svg" sizes="any" type="image/svg+xml">
+</head>
+
+<body>
+
+<div id="background">
+
+    <div id="container">
+        
+        <h1 id="title"> inverted pendulum </h1>
+        
+        <div id="upper-sliders"> 
+            
+            <p class="left"> gravitational acceleration </p>
+            <input id="g-slider" class="middle" type="range" min="-10" max="50" value="9.81" step="0.01"> </input>
+            <input id="g-input"  type="number" class="right number" step="0.01" value="9.81"> </input>
+    
+            <p class="left"> pendulum length </p>
+            <input id="pendulum-length-slider" class="middle" type="range" min="0.01" max="3" value="0.65" step="0.01"> </input>
+            <input id="pendulum-length-input"  type="number" class="right number" step="0.01" value="0.65"> </input>
+
+            <p class="left"> pendulum mass </p>
+            <input id="pendulum-mass-slider" class="middle" type="range" min="0.01" max="100" value="1" step="0.01"> </input>
+            <input id="pendulum-mass-input"  type="number" class="right number" step="0.01" value="1"> </input>
+
+            <p class="left"> slider mass </p>
+            <input id="slider-mass-slider" class="middle" type="range" min="0.01" max="100" value="1" step="0.01"> </input>
+            <input id="slider-mass-input"  type="number" class="right number" step="0.01" value="1"> </input>
+            
+            
+        </div>
+        
+        <div id="buttons">
+            <button id="reset"> reset </button>
+            <button id="toggle-controller"> turn on controller </button>
+            <button id="nudge"> nudge </button>
+        </div>
+        
+        <div id="lower-sliders">
+            
+            <p class="left"> P<sub>θ</sub> </p>
+            <input id="ptheta-slider" type="range" class="middle" min="-500" max="500" value="100" step="1"> </input>
+            <input id="ptheta-input"  type="number" class="right number" step="1" value="100"> </input>
+            
+            <p class="left"> D<sub>θ</sub> </p>
+            <input id="dtheta-slider" type="range" class="middle" min="-200" max="200" value="10" step="1"> </input>
+            <input id="dtheta-input"  type="number" class="right number" step="1" value="10"> </input>
+            
+            <p class="left"> P<sub>x</sub> </p>
+            <input id="px-slider" type="range" class="middle" min="-200" max="200" value="20" step="1"> </input>
+            <input id="px-input"  type="number" class="right number" step="1" value="20"> </input>
+            
+            <p class="left"> D<sub>x</sub> </p>
+            <input id="dx-slider" type="range" class="middle" min="-200" max="200" value="10" step="1"> </input>
+            <input id="dx-input"  type="number" class="right number" step="1" value="10"> </input>
+        </div>
+
+        <p style="margin-top: 2rem; font-size: 1rem;"> this is a simulation of an inverted pendulum with a PD controller to bring the pendulum angle θ and silder displacement x to zero. it uses RK4 numerical integration and the controller function at the top of the JS code can be easily modified to test new controllers. you can also drag the pendulum around by tapping or clicking. </p>
+
+        <p id="bottom-text"> made by <a href="https://www.github.com/OscarSaharoy" target="_blank"> oscar saharoy </a> </p>
+        
+        <svg width="100" height="100" viewbox="-50 -40 100 50" id="shadow" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none">
+            
+            <mask id="pendulum-shadow">
+                <rect class="pole" x="-12.5" y="-55" width="5" height="65" style="fill: white; stroke: none" transform-origin="-10 10" />
+                <circle class="top-circle" cx="-10" cy="10" r="10" style="fill: white; stroke: none" />
+                <rect class="slider" x="-23" y="4" width="26" height="12" rx="3" style="fill: white; stroke: none" />
+                <rect x="-110" y="7.5" width="200" height="5" style="fill: white; stroke: none" />
+            </mask>
+            
+            <rect x="-300" y="-300" width="600" height="600" mask="url(#pendulum-shadow)" style="stroke: none; fill: rgba(0, 0, 0, 0.07)" />
+            
+            
+        </svg>
+           
+        <svg width="100" height="100" viewbox="-50 -40 100 50" id="pendulum" xmlns="http://www.w3.org/2000/svg">
+
+            <rect id="rail" x="-100" y="-2.5" width="200" height="5" />
+            <line x1="-99.5" y1="-1.5" x2="99.5" y2="-1.5" style="stroke: white; pointer-events: none;" />
+            <line x1="-100" y1="1.7" x2="100" y2="1.7" style="stroke: rgba(0, 0, 0, 0.15); pointer-events: none;" />
+            
+            <mask id="slider-rail-shadow">
+                <polygon class="slider" points="-13,-2.5 -13,2.5 -18,2.5 -14.5,-2.5" style="fill: white; stroke: none" />
+            </mask>
+            
+            <rect x="-100" y="-2.5" width="200" height="5" mask="url(#slider-rail-shadow)" style="fill: rgba(0, 0, 0, 0.2); stroke: none; pointer-events: none;" />
+            
+
+            <rect class="pole" x="-2.5" y="-65" width="5" height="65" />
+            <line class="pole" x1="1" y1="-64" x2="1" y2="0" style="stroke: white" />
+            <line class="pole" x1="-1.5" y1="-64" x2="-1.5" y2="0" style="stroke: rgba(0, 0, 0, 0.1);" />
+
+            <clipPath id="pole-shadow-clip">
+                <rect class="pole" x="-2.5" y="-70" width="5" height="70" style="fill: black;" />
+            </clipPath>
+
+
+            <mask id="top-circle-shadow">
+                <circle cx="0" cy="0" r="10" style="stroke: none; fill: white;" />
+                <circle cx="2" cy="-2" r="10" style="stroke: none; fill: black;" />
+            </mask>
+
+            <mask id="top-circle-pole-shadow-mask">
+                <circle class="top-circle" cx="-1.5" cy="2.5" r="11" style="stroke: none; fill: white;" />
+            </mask>
+
+            <rect x="-200" y="-200" width="400" height="400" mask="url(#top-circle-pole-shadow-mask)" clip-path="url(#pole-shadow-clip)" style="fill: rgba(0, 0, 0, 0.15); stroke: none" />
+
+            <circle class="top-circle" id="drag-target" cx="0" cy="0" r="20" style="fill: transparent; stroke: none;" />
+            <circle class="top-circle" cx="0" cy="0" r="10" style="fill: #b0e4fE" />
+            <circle class="top-circle" cx="4" cy="-4" r="1.7" style="fill: rgba(255, 255, 255, 0.6); stroke: none" />
+            <circle class="top-circle" cx="0" cy="0" r="10.5" mask="url(#top-circle-shadow)" style="fill: rgba(0, 0, 0, 0.1)" />
+
+
+            <mask id="slider-pole-shadow-mask">
+                <rect class="slider" x="-15.5" y="-6.5" width="28.7" height="15" rx="5" style="fill: white; stroke: none" />
+            </mask>
+
+            <rect x="-100" y="-100" width="200" height="200" mask="url(#slider-pole-shadow-mask)" clip-path="url(#pole-shadow-clip)" style="fill: rgba(0, 0, 0, 0.15); stroke: none" />
+            <rect class="slider" x="-13" y="-6" width="26" height="12" rx="3" style="fill: #3672a0" />
+            <rect class="slider" x="1.25" y="-4.25" width="10" height="2" rx="1" style="fill: rgba(255, 255, 255, 0.3); stroke: none" />
+            <rect class="slider" x="-12" y="-6" width="25" height="11" rx="2" style="fill: none; stroke: rgba(0, 0, 0, 0.15)" />
+
+        </svg>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="inverted-pendulum.js"> </script>
+
+</body>
+</html>
