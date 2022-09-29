@@ -5,7 +5,7 @@ var currentLine = null;
 var currentLineD = null;
 
 
-function strokeStart( svgCoords ) {
+export function strokeStart( svgCoords ) {
 	
 	currentLine = document.querySelector( "svg#canvas #templates path" ).cloneNode();
 	currentLineD = `M${svgCoords.x} ${svgCoords.y} `;
@@ -14,7 +14,7 @@ function strokeStart( svgCoords ) {
 }
 
 
-function strokeContinue( svgCoords ) {
+export function strokeContinue( svgCoords ) {
 	
 	if( !currentLine ) return;
 
@@ -23,14 +23,14 @@ function strokeContinue( svgCoords ) {
 }
 
 
-function strokeCancel() {
+export function strokeCancel() {
 	
 	currentLine.remove();
 	strokeEnd();
 }
 
 
-function strokeEnd() {
+export function strokeEnd() {
 	
 	currentLine = null;
 	currentLineD = null;
