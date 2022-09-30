@@ -1,6 +1,7 @@
 // Oscar Saharoy 2022
 
 import { strokeStart, strokeContinue, strokeCancel, strokeEnd } from "./stroke.js";
+import { erase, resetErase } from "./erase.js";
 
 
 const svgCanvas = document.getElementById( "canvas" );
@@ -9,7 +10,7 @@ const svgCanvas = document.getElementById( "canvas" );
 let activePointers = {};
 
 // list of elements that can't be dragged over
-let clickables = [ document.querySelector("circle") ];
+let clickables = [];
 
 // mean pointer position and that of last frame
 let meanPointer     = { x: 0, y: 0 };
@@ -25,6 +26,9 @@ let skip1Frame = false;
 
 // counter to say how far through a stroke we are
 let strokeSteps = 0;
+
+// flag is true if we are erasing
+let erasing = false;
 
 // get mean and spread of a list of pointer positions
 const getMeanPointer = arr => arr.reduce( (acc, val) => ({ x: acc.x + val.x/arr.length, y: acc.y+val.y/arr.length }), {x: 0, y: 0} );
@@ -84,8 +88,17 @@ function pointermove( event ) {
     // keep track of the pointer pos
     activePointers[event.pointerId] = eventClientCoords;
 
+	// if we are in a stroke and the event buttons are greater than 1,
+	// the pen button is being pressed so cancel the stroke and start erasing
+	if( strokeSteps > 0 && event.buttons > 1 ) {
+		erasing = true;
+		strokeCancel();
+	}
+
+	if( erasing ) erase( clientCoordsToSVG(eventClientCoords) );
+
 	// update the stroke steps counter and continue drawing
-	if( strokeSteps > 0 ) {
+	if( !erasing && strokeSteps > 0 ) {
 		strokeSteps++;
 		strokeContinue( clientCoordsToSVG(eventClientCoords) );
 	}
@@ -105,6 +118,8 @@ function pointerup( event ) {
 	if( !Object.keys(activePointers).length ) {
 		strokeSteps = 0;
 		strokeEnd();
+		erasing = false;
+		resetErase();
 	}
 }
 

@@ -2,34 +2,6 @@
 
 const svgCanvas = document.getElementById( "canvas" );
 
-var currentLine = null;
-var currentLineD = null;
-
-function pointerdown( event ) {
-	
-	currentLine = document.querySelector( "svg#canvas #templates path" ).cloneNode();
-	currentLineD = `M${event.clientX} ${event.clientY} `;
-	currentLine.setAttribute( "d", currentLineD );
-	svgCanvas.appendChild(currentLine);
-}
-
-function pointerup( evnt ) {
-	
-	currentLine = null;
-	currentLineD = null;
-}
-
-
-function pointermove( event ) {
-	
-	if( !currentLine ) return;
-
-	console.log( event );
-	
-	currentLineD += `L${event.clientX} ${event.clientY} `;
-	currentLine.setAttribute( "d", currentLineD );
-}
-
 
 document.addEventListener( "keydown", event => event.key == 'd' ? downloadSVG() : null );
 
