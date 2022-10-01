@@ -2,7 +2,6 @@
 
 const svgCanvas = document.getElementById( "canvas" );
 
-
 document.addEventListener( "keydown", event => event.key == 'd' ? downloadSVG() : null );
 
 // svg downloading function

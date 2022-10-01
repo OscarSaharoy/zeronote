@@ -6,7 +6,7 @@
 body, #container {
 	width: 100vw;
 	height: 100vh;
-	overflow: none;
+	overflow: hidden;
 	display: grid;
 	justify-items: stretch;
 	align-items: stretch;
