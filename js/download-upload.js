@@ -1,8 +1,11 @@
 // Oscar Saharoy 2022
 
 const svgCanvas = document.getElementById( "canvas" );
+const saveButton = document.getElementById( "save" );
+const loadButton = document.getElementById( "load" );
 
 document.addEventListener( "keydown", event => event.key == 'd' ? downloadSVG() : null );
+saveButton.addEventListener( "click", downloadSVG );
 
 // svg downloading function
 function downloadSVG() {
