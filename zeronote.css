@@ -19,4 +19,32 @@ svg#canvas {
 
 #toolbox {
 	position: absolute;
+	padding: 1rem;
+	left: 1rem;
+	top: 7rem;
+	background: white;
+	height: 20rem;
+	border: 0.2rem solid grey;
+	border-radius: 1.5rem;
+}
+
+#toolbox img {
+	width: 2rem;
+}
+#toolbox img:hover {
+	filter: invert(100%);
+}
+
+#logo {
+	position: absolute;
+	width: 5rem;
+	top: 1rem;
+	left: 1rem;
+}
+
+#undo {
+}
+
+#redo {
+	transform: scaleX(-1);
 }

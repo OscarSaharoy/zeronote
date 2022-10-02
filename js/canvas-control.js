@@ -5,12 +5,13 @@ import { erase, resetErase } from "./erase.js";
 
 
 const svgCanvas = document.getElementById( "canvas" );
+const toolbox = document.getElementById( "toolbox" );
 
 // object containing map of pointers id to position
 let activePointers = {};
 
 // list of elements that can't be dragged over
-let clickables = [];
+let clickables = [ toolbox ];
 
 // mean pointer position and that of last frame
 let meanPointer     = { x: 0, y: 0 };
