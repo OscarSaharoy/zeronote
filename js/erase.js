@@ -1,6 +1,7 @@
 // Oscar Saharoy 2022
 
 import { strokesCoords } from "./stroke.js";
+import { dist, ccw, intersectSegments } from "./utility.js";
 
 
 var lastEraseCoords = null;
@@ -37,16 +38,3 @@ export function resetErase() {
 }
 
 
-function ccw( A, B, C ) {
-	return (C.y-A.y) * (B.x-A.x) > (B.y-A.y) * (C.x-A.x);
-}
-
-function dist( A, B ) {
-	return Math.sqrt( (A.x-B.x) * (A.x-B.x) + (A.y-B.y) * (A.y-B.y) );
-}
-
-function intersectSegments( segA, segB ) {
-	return dist( segB.end, segA.start ) < 5	
-		|| ccw(segA.start, segB.start, segB.end  ) != ccw(segA.end,   segB.start, segB.end) 
-	    && ccw(segA.start, segA.end,   segB.start) != ccw(segA.start, segA.end,   segB.end);
-}

@@ -1,22 +1,28 @@
 // Oscar Saharoy 2022
 
+import { dist } from "./utility.js";
+
+
 const svgCanvas = document.getElementById( "canvas" );
 
 var currentPath = null;
-var currentPathD = null;
 var currentPathID = 0;
+var provisionalPoint = null;
 
 export var strokesCoords = {};
+
+
+const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x} ${coord.y}`;
+const coordListToD = coordList => coordList.reduce( 
+	(acc,val,idx) => acc + coordToDEntry(val, idx), "" );
 
 
 export function strokeStart( svgCoords ) {
 	
 	currentPath = document.querySelector( "svg#canvas #templates path" ).cloneNode();
-	currentPathD = `M${svgCoords.x} ${svgCoords.y} `;
-	currentPathID++;
-
-	currentPath.setAttribute( "d", currentPathD );
 	svgCanvas.appendChild( currentPath );
+	
+	currentPathID++;
 	currentPath.id = `path${currentPathID}`;
 
 	strokesCoords[currentPathID] = [svgCoords];
@@ -24,11 +30,17 @@ export function strokeStart( svgCoords ) {
 
 
 export function strokeContinue( svgCoords ) {
-	
-	currentPathD += `L${svgCoords.x} ${svgCoords.y} `;
-	currentPath.setAttribute( "d", currentPathD );
 
+	const currentStroke = strokesCoords[currentPathID];
+	const lastStrokePoint = currentStroke[currentStroke.length - 1];
+
+
+
+	if( dist( svgCoords, lastStrokePoint ) < 10 ) provisionalPoint = lastStrokePoint;
+	
 	strokesCoords[currentPathID].push( svgCoords );
+	currentPath.setAttribute( 
+		"d", coordListToD( strokesCoords[currentPathID] ) );
 }
 
 
@@ -50,7 +62,6 @@ export function strokeEnd() {
 	}
 	
 	currentPath = null;
-	currentPathD = null;
 
 	console.log(strokesCoords);
 }
