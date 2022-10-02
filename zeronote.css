@@ -47,6 +47,10 @@ svg#canvas {
 	transform: scaleX(-1);
 }
 
+#toolbox input[type="file"] {
+	display: none;
+}
+
 #toolbox #grab {
 	margin-top: .5rem;
 	width: 1.4rem;
