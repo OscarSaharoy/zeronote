@@ -5,39 +5,11 @@
    viewBox="0 0 13.722197 13.722127"
    version="1.1"
    id="svg1354"
-   sodipodi:docname="zeronoteicon.svg"
-   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1080"
-     id="namedview1989"
-     showgrid="false"
-     inkscape:zoom="23.360765"
-     inkscape:cx="6.5280397"
-     inkscape:cy="4.2592784"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg1354"
-     inkscape:showpageshadow="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm" />
   <defs
      id="defs1348" />
   <metadata
@@ -54,33 +26,17 @@
   <path
      style="opacity:0.995;fill:#ca64ea;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="M 0.57170486,7.3758301 6.8589989,0 V 13.71793 L 5.4234049,12.26981 V 4.0033501 l -3.759207,4.4745 z"
-     id="path1284-5"
-     sodipodi:nodetypes="ccccccc"
-     inkscape:export-filename="C:\Design\zeronotelogo.png"
-     inkscape:export-xdpi="1360.65"
-     inkscape:export-ydpi="1360.65" />
+     id="path1284-5" />
   <path
      style="opacity:0.995;fill:#791aab;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="m 1.6641979,8.4778501 1.432191,-0.00101 2.327016,-2.7504703 V 4.0035745 Z"
-     id="path1286-0"
-     sodipodi:nodetypes="ccccc"
-     inkscape:export-filename="C:\Design\zeronotelogo.png"
-     inkscape:export-xdpi="1360.65"
-     inkscape:export-ydpi="1360.65" />
+     id="path1286-0" />
   <path
      style="opacity:0.995;fill:#791aab;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="M 13.146296,6.3421001 6.8589989,13.71793 V 0 L 8.294595,1.44812 v 8.2664802 l 3.759201,-4.4745201 z"
-     id="path1288-6"
-     sodipodi:nodetypes="ccccccc"
-     inkscape:export-filename="C:\Design\zeronotelogo.png"
-     inkscape:export-xdpi="1360.65"
-     inkscape:export-ydpi="1360.65" />
+     id="path1288-6" />
   <path
      style="opacity:0.995;fill:#ca64ea;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="M 12.053796,5.2400801 10.621612,5.2410901 8.294595,7.99156 v 1.7228 z"
-     id="path1290-0"
-     sodipodi:nodetypes="ccccc"
-     inkscape:export-filename="C:\Design\zeronotelogo.png"
-     inkscape:export-xdpi="1360.65"
-     inkscape:export-ydpi="1360.65" />
+     id="path1290-0" />
 </svg>
