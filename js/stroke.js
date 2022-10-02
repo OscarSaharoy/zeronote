@@ -34,8 +34,6 @@ export function strokeContinue( svgCoords ) {
 	const currentStroke = strokesCoords[currentPathID];
 	const lastStrokePoint = currentStroke[currentStroke.length - 1];
 
-
-
 	if( dist( svgCoords, lastStrokePoint ) < 10 ) provisionalPoint = lastStrokePoint;
 	
 	strokesCoords[currentPathID].push( svgCoords );
@@ -56,7 +54,7 @@ export function strokeCancel() {
 
 export function strokeEnd() {
 
-	if( Object.hasOwn(strokesCoords, currentPathID) && strokesCoords[currentPathID].length == 1 ) {
+	if( strokesCoords.hasOwnProperty(currentPathID) && strokesCoords[currentPathID].length == 1 ) {
 		currentPath.remove();
 		delete strokesCoords[currentPathID];
 	}
