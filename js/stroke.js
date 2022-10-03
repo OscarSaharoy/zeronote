@@ -17,6 +17,15 @@ const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x} ${coord.y}`;
 const coordListToD = coordList => coordList.reduce( 
 	(acc,val,idx) => acc + coordToDEntry(val, idx), "" );
 
+const getPathCoordList = elm => dToCoordList( elm.getAttribute('d') );
+const dToCoordList = d => 
+	d.replace( /M/gi, '' )
+	 .split( "L" )
+	 .map( coordString => coordString.split( " " ) )
+	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
+
+const getPathID = elm => +(elm.id.replace( /path/gi, '' ));
+
 
 export function strokeStart( svgCoords ) {
 	
@@ -63,5 +72,18 @@ export function strokeEnd() {
 	currentPath = null;
 
 	console.log(strokesCoords);
+}
+
+
+export function reloadStrokesCoords() {
+
+	const strokes = document.querySelectorAll( "#strokes path" );
+
+	strokesCoords = {};
+
+	for( const stroke of strokes ) {
+		strokesCoords[ getPathID(stroke) ] = getPathCoordList( stroke );
+		currentPathID = Math.max( getPathID(stroke), currentPathID );
+	}
 }
 
