@@ -13,15 +13,15 @@ var provisionalPoint = null;
 export var strokesCoords = {};
 
 
-const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x} ${coord.y}`;
+const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x},${coord.y}`;
 const coordListToD = coordList => coordList.reduce( 
-	(acc,val,idx) => acc + coordToDEntry(val, idx), "" );
+	(acc,val,idx) => acc + " " + coordToDEntry(val, idx), "" );
 
 const getPathCoordList = elm => dToCoordList( elm.getAttribute('d') );
 const dToCoordList = d => 
 	d.replace( /M/gi, '' )
 	 .split( "L" )
-	 .map( coordString => coordString.split( " " ) )
+	 .map( coordString => coordString.split( "," ) )
 	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
 
 const getPathID = elm => +(elm.id.replace( /path/gi, '' ));
