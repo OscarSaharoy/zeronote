@@ -4,6 +4,7 @@ import { dist } from "./utility.js";
 
 
 const svgCanvas = document.getElementById( "canvas" );
+const strokesGroup = document.getElementById( "strokes" );
 
 var currentPath = null;
 var currentPathID = 0;
@@ -19,8 +20,8 @@ const coordListToD = coordList => coordList.reduce(
 
 export function strokeStart( svgCoords ) {
 	
-	currentPath = document.querySelector( "svg#canvas #templates path" ).cloneNode();
-	svgCanvas.appendChild( currentPath );
+	currentPath = document.querySelector( "svg#canvas defs path" ).cloneNode();
+	strokesGroup.appendChild( currentPath );
 	
 	currentPathID++;
 	currentPath.id = `path${currentPathID}`;
