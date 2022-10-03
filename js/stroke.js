@@ -70,8 +70,6 @@ export function strokeEnd() {
 	}
 	
 	currentPath = null;
-
-	console.log(strokesCoords);
 }
 
 
