@@ -185,14 +185,17 @@ function wheel( event ) {
 
 function updateCanvasViewBox() {
 
+	// limit canvas offset to edge of page
 	canvasOffset.x = Math.max( 0, canvasOffset.x );
 	canvasOffset.y = Math.max( 0, canvasOffset.y );
     
+	// get the x and y offsets, height and width of the viewBox
 	const x = canvasOffset.x;
 	const y = canvasOffset.y;
     const width  = svgCanvas.clientWidth * canvasScale;
     const height = svgCanvas.clientHeight * canvasScale;
 	
+	// set the viewBox
 	svgCanvas.setAttribute( "viewBox", `${x} ${y} ${width} ${height}` );
 }
 

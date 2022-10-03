@@ -3,8 +3,8 @@
 import { dist } from "./utility.js";
 
 
-const svgCanvas = document.getElementById( "canvas" );
-const strokesGroup = document.getElementById( "strokes" );
+const svgCanvas  = document.getElementById( "canvas"  );
+var strokesGroup = document.getElementById( "strokes" );
 
 var currentPath = null;
 var currentPathID = 0;
@@ -28,7 +28,7 @@ const getPathID = elm => +(elm.id.replace( /path/gi, '' ));
 
 
 export function strokeStart( svgCoords ) {
-	
+
 	currentPath = document.querySelector( "svg#canvas defs path" ).cloneNode();
 	strokesGroup.appendChild( currentPath );
 	
@@ -66,8 +66,9 @@ export function strokeCancel() {
 export function strokeEnd() {
 
 	if( strokesCoords.hasOwnProperty(currentPathID) && strokesCoords[currentPathID].length == 1 ) {
-		currentPath.remove();
-		delete strokesCoords[currentPathID];
+		strokesCoords[currentPathID].push(strokesCoords[currentPathID][0]);
+		currentPath.setAttribute( 
+			"d", coordListToD( strokesCoords[currentPathID] ) );
 	}
 	
 	currentPath = null;
