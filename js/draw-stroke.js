@@ -1,6 +1,7 @@
 // Oscar Saharoy 2022
 
 import { dist, dot, direction } from "./utility.js";
+import { Stroke } from "./stroke.js";
 
 
 const svgCanvas  = document.getElementById( "canvas"  );
@@ -8,14 +9,9 @@ var strokesGroup = document.getElementById( "strokes" );
 
 var currentPath = null;
 var currentPathID = 0;
-var provisionalPoint = null;
+var currentStroke = null;
 
 export var strokesCoords = {};
-
-
-const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x},${coord.y}`;
-const coordListToD = coordList => coordList.reduce( 
-	(acc,val,idx) => acc + " " + coordToDEntry(val, idx), "" );
 
 
 const crPaddingPoint = coordList => 
@@ -35,13 +31,6 @@ const coordListToCatmullRomD = coordList =>
 	`M${coordList[0].x},${coordList[0].y} ` +
 	formFourTuples( catmullRomPad(coordList) ).reduce( (acc,val) => acc + " " + catmullRomDEntry(val), "" )
 
-
-const getPathCoordList = elm => dToCoordList( elm.getAttribute('d') );
-const dToCoordList = d => 
-	d.replace( /M/gi, '' )
-	 .split( "L" )
-	 .map( coordString => coordString.split( "," ) )
-	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
 
 const getCatmullRomPathCoordList = elm => catmullRomDToCoordList( elm.getAttribute('d') );
 const catmullRomDToCoordList = d =>
@@ -79,6 +68,8 @@ export function strokeStart( svgCoords ) {
 	currentPath.id = `path${currentPathID}`;
 
 	strokesCoords[currentPathID] = [svgCoords];
+
+	currentStroke = new Stroke();
 }
 
 
@@ -86,9 +77,6 @@ export function strokeContinue( svgCoords ) {
 
 	const currentStroke = strokesCoords[currentPathID];
 	const lastStrokePoint = currentStroke[currentStroke.length - 1];
-
-	if( dist( svgCoords, lastStrokePoint ) < 10 )
-		provisionalPoint = lastStrokePoint;
 
 	strokesCoords[currentPathID].push( svgCoords );
 	strokesCoords[currentPathID] = filterPath( strokesCoords[currentPathID] );

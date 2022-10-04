@@ -1,11 +1,16 @@
 // Oscar Saharoy 2022
 
-class Stroke {
+
+const svgCanvas = document.getElementById( "canvas" );
+const strokeTemplate = document.querySelector( "svg#canvas defs path" );
+
+export class Stroke {
+
 	constructor() {
 
 		this.vertices = [];
-		this.pathElm = null;
-		this.id = null;
+		this.pathElm = strokeTemplate.cloneNode();
+		this.id = "p" + (new Date()).valueOf();
 	}
 
 	
