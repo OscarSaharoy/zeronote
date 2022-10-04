@@ -55,6 +55,21 @@ const catmullRomDToCoordList = d =>
 const getPathID = elm => +(elm.id.replace( /path/gi, '' ));
 
 
+const filterPath = coordsList => {
+
+	const filteredPath = [ coordsList[0] ];
+	
+	for( const coord of coordsList.slice(1, -1) ) {
+
+		if( dist( coord, filteredPath[filteredPath.length-1] ) > 10 )
+			filteredPath.push(coord);
+	}
+
+	filteredPath.push( coordsList[coordsList.length-1] );
+	return filteredPath; 
+}
+
+
 export function strokeStart( svgCoords ) {
 
 	currentPath = document.querySelector( "svg#canvas defs path" ).cloneNode();
@@ -76,6 +91,7 @@ export function strokeContinue( svgCoords ) {
 		provisionalPoint = lastStrokePoint;
 
 	strokesCoords[currentPathID].push( svgCoords );
+	strokesCoords[currentPathID] = filterPath( strokesCoords[currentPathID] );
 	currentPath.setAttribute( 
 		"d", coordListToCatmullRomD( strokesCoords[currentPathID] ) );
 }
