@@ -1,6 +1,6 @@
 // Oscar Saharoy 2022
 
-import { strokeStart, strokeContinue, strokeCancel, strokeEnd } from "./stroke.js";
+import { strokeStart, strokeContinue, strokeCancel, strokeEnd } from "./draw-stroke.js";
 import { erase, resetErase } from "./erase.js";
 
 

@@ -1,6 +1,6 @@
 // Oscar Saharoy 2022
 
-import { strokesCoords } from "./stroke.js";
+import { strokesCoords } from "./draw-stroke.js";
 import { dist, ccw, intersectSegments } from "./utility.js";
 
 
