@@ -17,6 +17,25 @@ const coordToDEntry = (coord,idx) => `${idx ? "L" : "M"}${coord.x},${coord.y}`;
 const coordListToD = coordList => coordList.reduce( 
 	(acc,val,idx) => acc + " " + coordToDEntry(val, idx), "" );
 
+const catmullRomStartEntry = threeTuple =>
+	`M${threeTuple[0].x},${threeTuple[0].y} L${threeTuple[1].x},${threeTuple[1].y}`;
+const catmullRomEndEntry = threeTuple =>
+	`L${threeTuple[2].x},${threeTuple[2].y}`;
+
+const catmullRomDEntry = fourTuple =>
+	`C${(-fourTuple[0].x + 6*fourTuple[1].x + fourTuple[2].x)/6},${(-fourTuple[0].y + 6*fourTuple[1].y + fourTuple[2].y)/6} ` +
+	`${(fourTuple[1].x + 6*fourTuple[2].x - fourTuple[3].x)/6},${(fourTuple[1].y + 6*fourTuple[2].y - fourTuple[3].y)/6} ` +
+	`${fourTuple[2].x},${fourTuple[2].y}`;
+
+const formFourTuples = coordList => 
+	coordList.slice(1, -2)
+		     .map( (_,idx) => coordList.slice(idx, idx+4) )
+const coordListToCatmullRomD = coordList => 
+	catmullRomStartEntry( coordList.slice(0, 3) ) + " " +
+	formFourTuples( coordList ).reduce( (acc,val) => acc + " " + catmullRomDEntry(val), "" ) + " " +
+	(coordList.length > 4 ? catmullRomEndEntry( coordList.slice(-3) ) : "");
+
+
 const getPathCoordList = elm => dToCoordList( elm.getAttribute('d') );
 const dToCoordList = d => 
 	d.replace( /M/gi, '' )
@@ -49,7 +68,7 @@ export function strokeContinue( svgCoords ) {
 
 	strokesCoords[currentPathID].push( svgCoords );
 	currentPath.setAttribute( 
-		"d", coordListToD( strokesCoords[currentPathID] ) );
+		"d", coordListToCatmullRomD( strokesCoords[currentPathID] ) );
 }
 
 
@@ -68,7 +87,7 @@ export function strokeEnd() {
 	if( strokesCoords.hasOwnProperty(currentPathID) && strokesCoords[currentPathID].length == 1 ) {
 		strokesCoords[currentPathID].push(strokesCoords[currentPathID][0]);
 		currentPath.setAttribute( 
-			"d", coordListToD( strokesCoords[currentPathID] ) );
+			"d", coordListToCatmullRomD( strokesCoords[currentPathID] ) );
 	}
 	
 	currentPath = null;
