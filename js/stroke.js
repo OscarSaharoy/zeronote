@@ -43,6 +43,15 @@ const dToCoordList = d =>
 	 .map( coordString => coordString.split( "," ) )
 	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
 
+const getCatmullRomPathCoordList = elm => catmullRomDToCoordList( elm.getAttribute('d') );
+const catmullRomDToCoordList = d =>
+	d.replace( /M/gi, '' )
+	 .split( /[CL]/ )
+	 .map( coordString => coordString.split( " " )[0] )
+	 .map( coordString => coordString.split( "," ) )
+	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
+
+
 const getPathID = elm => +(elm.id.replace( /path/gi, '' ));
 
 
@@ -101,7 +110,7 @@ export function reloadStrokesCoords() {
 	strokesCoords = {};
 
 	for( const stroke of strokes ) {
-		strokesCoords[ getPathID(stroke) ] = getPathCoordList( stroke );
+		strokesCoords[ getPathID(stroke) ] = getCatmullRomPathCoordList( stroke );
 		currentPathID = Math.max( getPathID(stroke), currentPathID );
 	}
 }
