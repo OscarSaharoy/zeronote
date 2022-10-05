@@ -27,11 +27,12 @@ function tryEraseStroke( stroke, eraseSegment ) {
 
 	// split the stroke coords into segments of adjacent (start, end) points
 	const strokeSegments = stroke.vertices.slice(0, -1).map( 
-		(_, i) => ({ start: stroke.vertices[i], end: stroke.vertices[i+1] }) );
+		(_, i) => segment( stroke.vertices[i], stroke.vertices[i+1] ) );
 
 	// if any of the stroke segments intersect the erase segment
 	if( strokeSegments.some( 
-			strokeSegment => intersectSegments( strokeSegment, eraseSegment ) ) )
+			strokeSegment => intersectSegments( strokeSegment, eraseSegment ) )
+		|| dist( stroke.vertices[0], eraseSegment.start ) < 5 )
 	
 		// delete the stroke
 		stroke.remove();

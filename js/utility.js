@@ -10,9 +10,8 @@ export const dist = (A, B) =>
 
 // returns true if segA intersects segB
 export const intersectSegments = (segA, segB) =>
-	dist( segB.end, segA.start ) < 5	
-	|| ccw(segA.start, segB.start, segB.end  ) != ccw(segA.end,   segB.start, segB.end) 
-	&& ccw(segA.start, segA.end,   segB.start) != ccw(segA.start, segA.end,   segB.end);
+	ccw(segA.start, segB.start, segB.end  ) != ccw(segA.end,   segB.start, segB.end) &&
+	ccw(segA.start, segA.end,   segB.start) != ccw(segA.start, segA.end,   segB.end);
 
 export const segment = (A, B) =>
 	({ start: A, end: B });
