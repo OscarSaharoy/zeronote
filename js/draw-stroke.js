@@ -10,7 +10,7 @@ var currentStroke = null;
 export function strokeStart( svgCoords ) {
 
 	currentStroke = new Stroke();
-	currentStroke.vertices.push( svgCoords );
+	currentStroke.addVertex( svgCoords );
 }
 
 

@@ -1,6 +1,6 @@
 // Oscar Saharoy 2022
 
-import { dist } from "./utility.js";
+import { add, back, commaSep, dist, div, mul, sub } from "./utility.js";
 
 
 export const strokesArray = [];
@@ -11,79 +11,135 @@ const strokeTemplate = document.querySelector( "svg#canvas defs path" );
 const strokesGroup = document.getElementById( "strokes" );
 
 
-const crPaddingPoint = coordList => 
-	({x: 2*(coordList[0].x-coordList[2].x) + coordList[3].x, y: 2*(coordList[0].y-coordList[2].y) + coordList[3].y});
-const catmullRomPad = coordList =>
-	coordList.length < 4 ? 
-		[ coordList[0], ...coordList, coordList[coordList.length-1] ] :
-	    [ crPaddingPoint(coordList), ...coordList, crPaddingPoint(coordList.slice().reverse()) ];
-const formFourTuples = coordList => 
-	coordList.slice(1, -2)
-		     .map( (_,idx) => coordList.slice(idx, idx+4) );
-const catmullRomDEntry = fourTuple =>
-	`C${(-fourTuple[0].x + 6*fourTuple[1].x + fourTuple[2].x)/6},${(-fourTuple[0].y + 6*fourTuple[1].y + fourTuple[2].y)/6} ` +
-	`${(fourTuple[1].x + 6*fourTuple[2].x - fourTuple[3].x)/6},${(fourTuple[1].y + 6*fourTuple[2].y - fourTuple[3].y)/6} ` +
-	`${fourTuple[2].x},${fourTuple[2].y}`;
-const coordListToCatmullRomD = coordList => 
-	`M${coordList[0].x},${coordList[0].y} ` +
-	formFourTuples( catmullRomPad(coordList) ).reduce( (acc,val) => acc + " " + catmullRomDEntry(val), "" )
+const dStart = firstPoint =>
+	`M${firstPoint.x},${firstPoint.y} L${firstPoint.x},${firstPoint.y} `
+
+const padShort = vertices =>
+	[ vertices[0], ...vertices, back(vertices) ];
+
+const catmullRomDEntry = ft =>
+	`C${ commaSep( div( add( mul(ft[1], 6), sub(ft[2], ft[0]) ), 6 ) ) }` +
+	` ${ commaSep( div( add( mul(ft[2], 6), sub(ft[1], ft[3]) ), 6 ) ) }` +
+	` ${ commaSep( ft[2] ) } `;
+
+const catmullRomD = vertices =>
+	formFourTuples( vertices ).reduce( (acc,val) => acc + catmullRomDEntry(val), "" )
+
+const shortD = vertices =>
+	dStart( vertices[0] ) +
+	catmullRomD( padShort(vertices) );
 
 
-const filterPath = coordList => {
+const crPaddingPoint = vs =>
+	add( mul( sub( vs[0], vs[2] ), 2), vs[3] );
 
-	const filteredPath = [ coordList[0] ];
-	
-	for( const coord of coordList.slice(1, -1) ) {
+const formFourTuples = vertices =>
+	vertices.slice(1, -2)
+		    .map( (_,idx) => vertices.slice(idx, idx+4) );
 
-		if( dist( coord, filteredPath[filteredPath.length-1] ) > 3 )
-			filteredPath.push(coord);
-	}
+const catmullRomPadStart = vertices =>
+	[ crPaddingPoint(vertices), ...vertices ];
 
-	filteredPath.push( coordList[coordList.length-1] );
-	return filteredPath; 
-}
+const catmullRomPadEnd = vertices =>
+	[ ...vertices, crPaddingPoint(vertices.slice().reverse()) ];
+
+const catmullRomPad = vertices =>
+	[ crPaddingPoint(vertices), ...vertices, crPaddingPoint(vertices.slice().reverse()) ];
+
+const longD = vertices =>
+	dStart( vertices[0] ) +
+	catmullRomD( catmullRomPad(vertices) );
 
 
-const verticesFromPathElm = elm => catmullRomDToCoordList( elm.getAttribute('d') );
-const catmullRomDToCoordList = d =>
-	d.replace( /M/gi, '' )
-	 .split( /[CL]/ )
-	 .map( coordString => coordString.split( " " )[0] )
-	 .map( coordString => coordString.split( "," ) )
-	 .map( coords => ({ x: +coords[0], y: +coords[1] }) );
+const verticesFromPathElm = elm => 
+	elm.getAttribute('d')
+	   .replace( /M/gi, '' )
+	   .split( /[CL]/ )
+	   .map( coordString => coordString.split( " " )[0] )
+	   .map( coordString => coordString.split( "," ) )
+	   .map( coords => ({ x: +coords[0], y: +coords[1] }) );
 
 
 export class Stroke {
 
 	constructor( pathElm ) {
 
+		// add this stroke to the strokesArray
 		strokesArray.push( this );
 
+		// if a pathElm is provided then use that to construct from
 		if( pathElm ) return this.fromPathElm(pathElm);
 
+		// start vertices array blank and create and add a new path to the dom
 		this.vertices = [];
 		this.pathElm = strokeTemplate.cloneNode();
 		strokesGroup.appendChild( this.pathElm );
+
+		// cache the pathElm's d attribute so we don't have to regenerate it fully
+		this.sureD = "";
+		this.unsureD = "";
 	}
 
 	fromPathElm( pathElm ) {
-		
+	
+		// set the Stroke's attributes to match the provided pathElm
 		this.vertices = verticesFromPathElm( pathElm );
-		this.pathElm = pathElm;
+		this.pathElm  = pathElm;
 	}
 
 	addVertex( point ) {
+
+		// filter the path (removes vertices that are too close together)
+		const lastVertex        = back(this.vertices, -1);
+		const penultimateVertex = back(this.vertices, -2);
+
+		this.changedLastVertex = lastVertex && penultimateVertex 
+			&& dist( lastVertex, penultimateVertex ) < 3;
+
+		if( this.changedLastVertex ) this.vertices.pop();
+
+		// add the new vertex and update the dom with the change
 		this.vertices.push( point );
-		this.vertices = filterPath( this.vertices );
 		this.updateElm();
 	}
 
+	updateD() {
+
+		// generate the d attribute for the path, caching previous results to speed up
+
+		if( this.sureD && !this.changedLastVertex )
+			this.sureD += catmullRomD( this.vertices.slice(-5,-1) );
+
+		else if( !this.sureD )
+			this.sureD = dStart(this.vertices[0]) 
+					   + catmullRomD( catmullRomPadStart(this.vertices.slice(0,-1)) );
+
+		this.unsureD = catmullRomD( catmullRomPadEnd(this.vertices.slice(-4)) );
+
+		return this.sureD + this.unsureD;
+	}
+
 	updateElm() {
-		this.pathElm.setAttribute( "d", coordListToCatmullRomD(this.vertices) );	
+
+		let d;
+	
+		if( this.vertices.length < 4 )
+			d = shortD( this.vertices );
+		else if( this.vertices.length < 6 )
+			d = longD( this.vertices );
+		else
+			d = this.updateD();
+
+		// set the d entry for the pathElm
+		this.pathElm.setAttribute( "d", d );	
 	}
 
 	remove() {
+
+		// remove the pathElm from the dom and remove this from the strokesArray
 		this.pathElm.remove();
+		const index = strokesArray.indexOf(this);
+		if( index != -1 ) strokesArray.splice( index, 1 );
 	}
 }
 
