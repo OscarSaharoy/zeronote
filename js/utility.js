@@ -41,3 +41,5 @@ export const direction = (A, B) =>
 export const dot = (A, B) =>
 	A.x * B.x + A.y * B.y;
 
+export const last = (arr, offset = -1) =>
+	arr[ arr.length + offset ]

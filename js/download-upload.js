@@ -1,6 +1,6 @@
 // Oscar Saharoy 2022
 
-import { reloadStrokesCoords } from "./draw-stroke.js";
+import { reloadStrokes } from "./stroke.js";
 
 const svgCanvas    = document.getElementById( "canvas"  );
 const strokesGroup = document.getElementById( "strokes" );
@@ -61,6 +61,6 @@ function insertStrokes( fileReaderResult ) {
 	// uploaded file
 	strokesGroup.innerHTML = dummy.querySelector( "#strokes" ).innerHTML;
 
-	reloadStrokesCoords();
+	reloadStrokes();
 }
 

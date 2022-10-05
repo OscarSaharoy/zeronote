@@ -1,7 +1,7 @@
 // Oscar Saharoy 2022
 
-import { strokesCoords } from "./draw-stroke.js";
-import { dist, ccw, intersectSegments } from "./utility.js";
+import { strokesArray } from "./stroke.js";
+import { dist, ccw, intersectSegments, segment } from "./utility.js";
 
 
 // track last erase coord so we can get the segment we have erased along
@@ -9,37 +9,32 @@ var lastEraseCoords = null;
 
 
 export function erase( eraseCoords ) {
-	
+
 	// if last erase coords is unset it is the first erase step so
 	// just use the current coords as last
 	if( !lastEraseCoords ) lastEraseCoords = eraseCoords;
 
-	// loop over the strokes in strokesCoords and try to erase each one
-	Object.keys(strokesCoords).forEach( strokeID => 
-		tryEraseStroke(strokeID, strokesCoords[strokeID], eraseCoords, lastEraseCoords) );	
+	// loop over the strokes in strokesArray and try to erase each one
+	strokesArray.forEach( stroke => 
+		tryEraseStroke( stroke, segment(eraseCoords, lastEraseCoords) ) );	
 
 	// set current erase coords to last erase coords for the next step
 	lastEraseCoords = eraseCoords;
 }
 
 
-function tryEraseStroke( strokeID, strokeCoords, eraseCoords, lastEraseCoords ) {
-	
-	// split the stroke coords into segments of adjacent (start, end) points
-	const strokeSegments = strokeCoords.slice(0, -1).map( 
-		(_, i) => ({ start: strokeCoords[i], end: strokeCoords[i+1] }) );
+function tryEraseStroke( stroke, eraseSegment ) {
 
-	// create a segment representing the line we are erasing along
-	const eraseSegment = { start: eraseCoords, end: lastEraseCoords };
+	// split the stroke coords into segments of adjacent (start, end) points
+	const strokeSegments = stroke.vertices.slice(0, -1).map( 
+		(_, i) => ({ start: stroke.vertices[i], end: stroke.vertices[i+1] }) );
 
 	// if any of the stroke segments intersect the erase segment
 	if( strokeSegments.some( 
-			strokeSegment => intersectSegments( strokeSegment, eraseSegment ) ) ) {
+			strokeSegment => intersectSegments( strokeSegment, eraseSegment ) ) )
 	
 		// delete the stroke
-		delete strokesCoords[strokeID];
-		document.querySelector( `#canvas #path${strokeID}` ).remove();
-	}
+		stroke.remove();
 }
 
 export function resetErase() {
