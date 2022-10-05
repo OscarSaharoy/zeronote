@@ -2,6 +2,7 @@
 
 import { strokeStart, strokeContinue, strokeCancel, strokeEnd } from "./draw-stroke.js";
 import { erase, resetErase } from "./erase.js";
+import { eraseButtonClicked } from "./erase-button.js";
 
 
 const svgCanvas = document.getElementById( "canvas" );
@@ -89,9 +90,10 @@ function pointermove( event ) {
     // keep track of the pointer pos
     activePointers[event.pointerId] = eventClientCoords;
 
-	// if we are in a stroke and the event buttons are greater than 1,
-	// the pen button is being pressed so cancel the stroke and start erasing
-	if( strokeSteps > 0 && event.buttons > 1 ) {
+	// if we are in a stroke and the event buttons are greater than 1 
+	// (pen button is being clicked) or the erase button is clicked,
+	// cancel the stroke and start erasing
+	if( strokeSteps > 0 && (event.buttons > 1 || eraseButtonClicked) ) {
 		erasing = true;
 		strokeCancel();
 	}

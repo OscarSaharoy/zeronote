@@ -37,11 +37,14 @@ svg#canvas {
 }
 
 #toolbox img.button {
-	width: 2rem;
+	height: 2rem;
 	cursor: pointer;
 }
 #toolbox img.button:hover {
 	filter: brightness(70%);
+}
+#toolbox img.button:active, #toolbox img.button.active {
+	filter: saturate(1000%);
 }
 
 #toolbox #redo {
