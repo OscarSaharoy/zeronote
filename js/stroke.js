@@ -1,6 +1,7 @@
 // Oscar Saharoy 2022
 
 import { add, back, commaSep, dist, div, mul, sub } from "./utility.js";
+import { currentColour } from "./colour-picker.js";
 
 
 export const strokesArray = [];
@@ -73,6 +74,7 @@ export class Stroke {
 		// start vertices array blank and create and add a new path to the dom
 		this.vertices = [];
 		this.pathElm = strokeTemplate.cloneNode();
+		this.pathElm.setAttribute( "stroke", currentColour );
 		strokesGroup.appendChild( this.pathElm );
 
 		// cache the pathElm's d attribute so we don't have to regenerate it fully

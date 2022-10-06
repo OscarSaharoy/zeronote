@@ -40,7 +40,7 @@ svg#canvas {
 	margin-bottom: 0.2rem;
 }
 
-#toolbox .button, #toolbox label {
+#toolbox img.button {
 	height: 2rem;
 	cursor: pointer;
 }
@@ -59,15 +59,26 @@ svg#canvas {
 	transform: scaleX(-1) scale(1.15);
 }
 
-#toolbox #colour-picker-input {
-	display: none;
+#toolbox .expand-holder {
+	position: relative;
+	width: 2rem;
+	display: grid;
+	grid-template-columns: auto auto;
 }
-#toolbox #pen {
-	height: 2.4rem;
+#toolbox .expand-holder input {
+	width: 0rem;
+	outline: none;
+	border: none;
+	margin-right: 0.75rem;
+	transition: width 0.5s;
 }
-
-#toolbox #erase {
-	height: 2.2rem;
+#toolbox .expand-holder input.expanded {
+	width: 10rem;
+	display: inline;
+}
+#toolbox #colour-picker {
+	height: 2rem;
+	cursor: pointer;
 }
 
 #toolbox input[type="file"] {
