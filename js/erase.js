@@ -11,8 +11,6 @@ var lastEraseCoords = null;
 
 export function erase( eraseCoords ) {
 
-	console.log("erase")
-
 	// if last erase coords is unset it is the first erase step so
 	// just use the current coords as last
 	if( !lastEraseCoords ) lastEraseCoords = eraseCoords;

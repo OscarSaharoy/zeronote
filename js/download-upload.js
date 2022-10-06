@@ -1,6 +1,7 @@
 // Oscar Saharoy 2022
 
 import { reloadStrokes } from "./stroke.js";
+import { resetActions } from "./undo-redo.js";
 
 const svgCanvas    = document.getElementById( "canvas"  );
 const strokesGroup = document.getElementById( "strokes" );
@@ -62,5 +63,6 @@ function insertStrokes( fileReaderResult ) {
 	strokesGroup.innerHTML = dummy.querySelector( "#strokes" ).innerHTML;
 
 	reloadStrokes();
+	resetActions();
 }
 
