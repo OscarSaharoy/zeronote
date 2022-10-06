@@ -67,10 +67,12 @@ function pointerdown( event ) {
 	const eventClientCoords = clientCoords( event );
 
 	// if this is the first pointer assume we are starting to draw a stroke
-	if( !Object.keys(activePointers).length ) {
+	if( !Object.keys(activePointers).length )
 		strokeSteps = 1;
+
+	// if it's the first pointer and it's not an erase stroke, call strokeStart
+	if( !Object.keys(activePointers).length && !(event.buttons > 1 || eraseButtonClicked) )
 		strokeStart( clientCoordsToSVG(eventClientCoords) );
-	}
 
     // add the pointer to activePointers
     activePointers[event.pointerId] = eventClientCoords;
