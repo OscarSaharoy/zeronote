@@ -93,7 +93,7 @@ function pointermove( event ) {
 	// if we are in a stroke and the event buttons are greater than 1 
 	// (pen button is being clicked) or the erase button is clicked,
 	// cancel the stroke and start erasing
-	if( strokeSteps > 0 && (event.buttons > 1 || eraseButtonClicked) ) {
+	if( !erasing && strokeSteps > 0 && (event.buttons > 1 || eraseButtonClicked) ) {
 		erasing = true;
 		strokeCancel();
 	}
@@ -108,6 +108,8 @@ function pointermove( event ) {
 }
 
 function pointerup( event ) {
+
+	if( !activePointers[event.pointerId] ) return;
     
     // remove the pointer from activePointers
     // (does nothing if it wasnt in them)
@@ -117,10 +119,14 @@ function pointerup( event ) {
     // a step change in pan position
     skip1Frame = true;
 
-	// if this is the last pointer up, any stroke is done
-	if( !Object.keys(activePointers).length ) {
+	// if this is the last pointer up, the stroke is done
+	if( !erasing && strokeSteps > 0 && !Object.keys(activePointers).length ) {
 		strokeSteps = 0;
 		strokeEnd();
+	}
+	
+	// if we are erasing then stop erasing
+	if( erasing && !Object.keys(activePointers).length ) {
 		erasing = false;
 		resetErase();
 	}

@@ -143,6 +143,19 @@ export class Stroke {
 		const index = strokesArray.indexOf(this);
 		if( index != -1 ) strokesArray.splice( index, 1 );
 	}
+
+	reinsert() {
+	
+		// add the pathElm back into the dom and into the strokeArray
+		strokesGroup.appendChild( this.pathElm );
+		strokesArray.push( this );
+	}
+
+	complete() {
+		
+		delete this.sureD;
+		delete this.unsureD;
+	}
 }
 
 

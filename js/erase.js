@@ -2,6 +2,7 @@
 
 import { strokesArray } from "./stroke.js";
 import { dist, ccw, intersectSegments, segment } from "./utility.js";
+import { actions, rebaseActions } from "./undo-redo.js";
 
 
 // track last erase coord so we can get the segment we have erased along
@@ -9,6 +10,8 @@ var lastEraseCoords = null;
 
 
 export function erase( eraseCoords ) {
+
+	console.log("erase")
 
 	// if last erase coords is unset it is the first erase step so
 	// just use the current coords as last
@@ -32,10 +35,14 @@ function tryEraseStroke( stroke, eraseSegment ) {
 	// if any of the stroke segments intersect the erase segment
 	if( strokeSegments.some( 
 			strokeSegment => intersectSegments( strokeSegment, eraseSegment ) )
-		|| dist( stroke.vertices[0], eraseSegment.start ) < 5 )
+		|| dist( stroke.vertices[0], eraseSegment.start ) < 5 ) {
 	
 		// delete the stroke
 		stroke.remove();
+
+		rebaseActions();
+		actions.push( { type: "erase", stroke: stroke } );
+	}
 }
 
 export function resetErase() {
