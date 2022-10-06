@@ -31,6 +31,10 @@ svg#canvas {
 	user-select: none;
 }
 
+#toolbox img, #toolbox svg {
+	overflow: visible;
+}
+
 #toolbox #logo {
 	width: 4rem;
 	margin-bottom: 0.2rem;
@@ -40,15 +44,24 @@ svg#canvas {
 	height: 2rem;
 	cursor: pointer;
 }
-#toolbox img.button:hover {
+#toolbox .button:hover {
 	filter: brightness(70%);
 }
-#toolbox img.button:active, #toolbox img.button.active {
+#toolbox .button:active, #toolbox img.button.active {
 	filter: saturate(1000%);
+	transform: scale(1.15);
 }
 
 #toolbox #redo {
 	transform: scaleX(-1);
+}
+#toolbox #redo.active, #toolbox #redo:active {
+	transform: scaleX(-1) scale(1.15);
+}
+
+#toolbox #colour {
+	height: 2rem;
+	cursor: pointer;
 }
 
 #toolbox input[type="file"] {
