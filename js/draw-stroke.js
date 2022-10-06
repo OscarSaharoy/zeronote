@@ -10,6 +10,7 @@ var currentStroke = null;
 
 export function strokeStart( svgCoords ) {
 
+	// start a new stroke and add the first vertex
 	currentStroke = new Stroke();
 	currentStroke.addVertex( svgCoords );
 }
@@ -17,12 +18,14 @@ export function strokeStart( svgCoords ) {
 
 export function strokeContinue( svgCoords ) {
 
+	// add the next vertex to the stroke
 	currentStroke.addVertex( svgCoords );
 }
 
 
 export function strokeCancel() {
 
+	// remove the stroke and stop tracking it
 	currentStroke?.remove();
 	currentStroke = null;
 }
@@ -30,10 +33,13 @@ export function strokeCancel() {
 
 export function strokeEnd() {
 
+	// rebase the action stack to branch from the current state
+	// and add the new stroke drawn
 	rebaseActions();
 	actions.push( { type: "draw", stroke: currentStroke } );
 
-	currentStroke?.complete();
+	// complete the stroke and stop tracking it
+	currentStroke.complete();
 	currentStroke = null;
 }
 
