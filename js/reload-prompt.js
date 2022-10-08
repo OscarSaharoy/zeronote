@@ -1,5 +1,8 @@
 // Oscar Saharoy 2022
 
+
+// this code provides the warning before the page is reloaded/closed
+
 const handleBeforeUnload = event => {
 	event.preventDefault();
 	const message =

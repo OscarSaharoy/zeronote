@@ -7,6 +7,7 @@ import { currentColour } from "./colour-picker.js";
 export const strokesArray = [];
 
 
+// get dom elements
 const svgCanvas = document.getElementById( "canvas" );
 const strokeTemplate = document.querySelector( "svg#canvas defs path" );
 const strokesGroup = document.getElementById( "strokes" );
@@ -95,6 +96,7 @@ export class Stroke {
 		const lastVertex        = back(this.vertices, -1);
 		const penultimateVertex = back(this.vertices, -2);
 
+		// decide if we should change the last vertex or add a new one
 		this.changedLastVertex = lastVertex && penultimateVertex 
 			&& dist( lastVertex, penultimateVertex ) < 3;
 
@@ -109,22 +111,28 @@ export class Stroke {
 
 		// generate the d attribute for the path, caching previous results to speed up
 
+		// if we have a sureD and we didn't change the last vertex then update
+		// the sureD with the new sure portion of the path
 		if( this.sureD && !this.changedLastVertex )
 			this.sureD += catmullRomD( this.vertices.slice(-5,-1) );
 
+		// if we don't have a sureD, generate it from the beginning
 		else if( !this.sureD )
 			this.sureD = dStart(this.vertices[0]) 
 					   + catmullRomD( catmullRomPadStart(this.vertices.slice(0,-1)) );
 
+		// generate the unsureD which is the part that may change
 		this.unsureD = catmullRomD( catmullRomPadEnd(this.vertices.slice(-4)) );
-
+	
+		// return the whole D
 		return this.sureD + this.unsureD;
 	}
 
 	updateElm() {
 
 		let d;
-	
+
+		// use a different function depending on the number of vertices for speed
 		if( this.vertices.length < 4 )
 			d = shortD( this.vertices );
 		else if( this.vertices.length < 6 )
