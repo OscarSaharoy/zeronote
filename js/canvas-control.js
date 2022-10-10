@@ -3,6 +3,8 @@
 import { strokeStart, strokeContinue, strokeCancel, strokeEnd } from "./draw-stroke.js";
 import { erase, resetErase } from "./erase.js";
 import { eraseButtonClicked } from "./erase-button.js";
+import { drawWithTouch } from "./draw-with-touch.js";
+
 
 
 const svgCanvas = document.getElementById( "canvas" );
@@ -66,12 +68,15 @@ function pointerdown( event ) {
 
 	const eventClientCoords = clientCoords( event );
 
-	// if this is the first pointer assume we are starting to draw a stroke
-	if( !Object.keys(activePointers).length )
+	// if these conditions are true we ignore a single touch
+	const ignoreAs1Touch = event.pointerType == "touch" && !drawWithTouch;
+
+	// if this is the first pointer and it's not an ignored touch, assume we are starting to draw a stroke
+	if( !Object.keys(activePointers).length && !ignoreAs1Touch )
 		strokeSteps = 1;
 
-	// if it's the first pointer and it's not an erase stroke, call strokeStart
-	if( !Object.keys(activePointers).length && !(event.buttons > 1 || eraseButtonClicked) )
+	// if it's the first pointer and it's not an ignored touch, and it's not an erase stroke, call strokeStart
+	if( !Object.keys(activePointers).length && !ignoreAs1Touch && !(event.buttons > 1 || eraseButtonClicked) )
 		strokeStart( clientCoordsToSVG(eventClientCoords) );
 
     // add the pointer to activePointers
