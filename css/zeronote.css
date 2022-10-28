@@ -25,7 +25,7 @@ svg#canvas {
 	padding-bottom: 1.6rem;
 	left: 1rem;
 	top: 1rem;
-	background-color: rgba(255,255,255,0.8);
+	background-color: #18181866;
 	justify-items: center;
 	border-radius: 1rem;
 	user-select: none;

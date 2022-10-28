@@ -4,7 +4,7 @@ const penTip = document.getElementById( "pen-tip" );
 const pickerInput = document.getElementById( "colour-picker-input" );
 
 // variable that holds the current selected stroke colour
-export let currentColour = "#000000";
+export let currentColour = "#ffffff";
 
 // define function to update pen tip colour and call it
 const updatePenTip = () => penTip.setAttribute( "fill", currentColour );
