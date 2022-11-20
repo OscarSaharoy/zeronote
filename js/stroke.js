@@ -98,7 +98,7 @@ export class Stroke {
 
 		// apply exponential smoothing
 		if( lastVertex )
-			point = add( mul( point, 0.5 ), mul( lastVertex, 0.5 ) );
+			point = add( mul( point, 0.75 ), mul( lastVertex, 0.25 ) );
 
 		// decide if we should change the last vertex or add a new one
 		this.changedLastVertex = lastVertex && penultimateVertex 
