@@ -52,6 +52,18 @@ document.addEventListener( "wheel",        wheel, {passive: false} );
 // function that gets a coords vector object from an event
 const clientCoords = event => ({ x: event.clientX, y: event.clientY });
 
+// a timeout ID for resetting the state after a while of inactivity (in a bugged state)
+let resetTimeout = null;
+
+// function that resets the canvas control state
+function resetState() {
+
+	activePointers = {};
+	skip1Frame = false;
+	strokeSteps = 0;
+	erasing = false;
+}
+
 
 function pointerdown( event ) {
 
@@ -112,6 +124,9 @@ function pointermove( event ) {
 		strokeSteps++;
 		strokeContinue( clientCoordsToSVG(eventClientCoords) );
 	}
+
+	const timeoutID = setTimeout( () => resetTimeout == timeoutID ? resetState() : null, 500 );
+	resetTimeout = timeoutID;
 }
 
 function pointerup( event ) {
