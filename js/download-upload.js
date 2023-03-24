@@ -14,13 +14,14 @@ saveButton.addEventListener( "click", downloadSVG );
 uploadInput.addEventListener( "input", uploadSVG );
 
 
-// returns a string like 01-05-2022_12-0-0
 function getDate() {
 
-	const now = new Date();
-	let date = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
-	let time = now.getHours() + "-" + now.getMinutes() + "-" + now.getSeconds();
-	return date + "_" + time;
+	const dateFormat = {hour12: true, month: "short", day: "numeric", hour: "numeric", minute: "numeric"};
+
+	return (new Date())
+		.toLocaleDateString( undefined, dateFormat )
+		.replace(/, /g, "_")
+		.replace(/[: ]/g, "-");
 }
 
 
