@@ -52,11 +52,16 @@ document.addEventListener( "wheel",        wheel, {passive: false} );
 // function that gets a coords vector object from an event
 const clientCoords = event => ({ x: event.clientX, y: event.clientY });
 
-// a timeout ID for resetting the state after a while of inactivity (in a bugged state)
-let resetTimeout = null;
 
-// function that resets the canvas control state
-function resetState() {
+// function to remove an active pointer that has been stationary for a while (is bugged)
+let timeoutIds = {};
+function killPointer( pointerId ) {
+
+	// remove the pointer from activePointers
+    delete activePointers[pointerId];
+
+	// if it was the last pointer, reset the canvas control state
+	if( activePointers.length ) return;
 
 	activePointers = {};
 	skip1Frame = false;
@@ -125,8 +130,10 @@ function pointermove( event ) {
 		strokeContinue( clientCoordsToSVG(eventClientCoords) );
 	}
 
-	const timeoutID = setTimeout( () => resetTimeout == timeoutID ? resetState() : null, 500 );
-	resetTimeout = timeoutID;
+	// kill the pointer if it hasnt moved after 500 ms
+	const pointerId = event.pointerId;
+	const timeoutId = setTimeout( () => timeoutIds[pointerId] == timeoutId && killPointer(pointerId), 500 );
+	timeoutIds[pointerId] = timeoutId;
 }
 
 function pointerup( event ) {
@@ -136,6 +143,9 @@ function pointerup( event ) {
     // remove the pointer from activePointers
     // (does nothing if it wasnt in them)
     delete activePointers[event.pointerId];
+
+	// remove the kill timeout for this pointer
+    delete timeoutIds[event.pointerId];
     
     // we lost a pointer so skip a frame to prevent
     // a step change in pan position
