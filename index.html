@@ -50,5 +50,10 @@
 <script type="module" src="js/reload-prompt.js"> </script>
 <script type="module" src="js/canvas-control.js"> </script>
 
+<script id="install-service-worker">
+	if( "serviceWorker" in navigator )
+		navigator.serviceWorker.register("serviceWorker.js");
+</script>
+
 </body>
 </html>
