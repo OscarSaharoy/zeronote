@@ -36,6 +36,10 @@ function downloadSVG() {
     elem.href = window.URL.createObjectURL(blob);
     elem.download = `zeronote_${getDate()}.svg`;
     elem.click();
+
+	// change the save icon for a bit to show success
+	saveButton.src = "svg/saved.svg";
+	setTimeout( () => saveButton.src = "svg/save.svg", 2000 );
 }
 
 
