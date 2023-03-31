@@ -32,8 +32,8 @@ const contentToCache = [
 ];
 
 
-self.addEventListener( "install", install );
-self.addEventListener( "fetch",   fetch   );
+self.addEventListener( "install", e => e.waitUntil(   install(e) ) );
+self.addEventListener( "fetch",   e => e.respondWith( fetch(e)   ) );
 
 
 async function install( e ) {
@@ -49,13 +49,13 @@ async function fetch( e ) {
 	const cacheResponse = await caches.match( e.request );
 
 	if( cacheResponse )
-		return e.respondWith( cacheResponse );
+		return cacheResponse;
 	
 	const response = await fetch( e.request );
 
 	const cache = await caches.open(cacheName);
 	cache.put(e.request, response.clone());
 
-	return e.respondWith( response );
+	return response;
 }
 
