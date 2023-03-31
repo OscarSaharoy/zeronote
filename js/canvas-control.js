@@ -52,6 +52,9 @@ document.addEventListener( "wheel",        wheel, {passive: false} );
 // function that gets a coords vector object from an event
 const clientCoords = event => ({ x: event.clientX, y: event.clientY });
 
+// limit x to within a and b
+const clamp = (x, a, b) => x < a ? a : ( x > b ? b : x );
+
 
 // function to remove an active pointer that has been stationary for a while (is bugged)
 let timeoutIds = {};
@@ -181,12 +184,12 @@ function pointerup( event ) {
     // we have to skip a frame when we change number of
     // pointers to avoid a jump
     if( !skip1Frame ) {
-        
-        // shift the container by the pointer movement
-        canvasOffset.x -= (meanPointer.x - lastMeanPointer.x) * canvasScale;
-        canvasOffset.y -= (meanPointer.y - lastMeanPointer.y) * canvasScale;
 
-		const scrollDelta = (lastPointerSpread - pointerSpread) * 2.7;
+        // shift the container by the pointer movement
+        canvasOffset.x -= clamp( meanPointer.x - lastMeanPointer.x, -100, 100 ) * canvasScale;
+        canvasOffset.y -= clamp( meanPointer.y - lastMeanPointer.y, -100, 100 ) * canvasScale;
+
+		const scrollDelta = clamp( (lastPointerSpread - pointerSpread) * 2.7, -100, 100 );
         
 		// call the wheel handler with a pseudo event to zoom
         wheel( { clientX: meanPointer.x,
