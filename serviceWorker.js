@@ -3,6 +3,7 @@
 
 const cacheName = "zeronote-v1";
 const contentToCache = [
+	"./",
 	"./serviceWorker.js",
 	"./screenshot.jpg",
 	"./index.html",
