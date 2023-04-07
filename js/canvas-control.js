@@ -60,6 +60,9 @@ let resetTimeout = null;
 
 // function that resets the canvas control state
 function resetState() {
+	
+	if( strokeSteps > 0 )
+		strokeEnd();
 
 	activePointers = {};
 	skip1Frame = false;
