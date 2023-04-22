@@ -10,10 +10,37 @@ const redoButton = document.getElementById( "redo" );
 // list of actions performed
 export const actions = [];
 let undoOffset = -1;
+let looping = false;
+let loopTimeout = null;
 
 // add callbacks to ui
-undoButton.addEventListener( "click", undo );
-redoButton.addEventListener( "click", redo );
+undoButton.addEventListener( "pointerdown", () => loop(undo) );
+redoButton.addEventListener( "pointerdown", () => loop(redo) );
+
+window.addEventListener( "pointerleave", endLoop ); 
+window.addEventListener( "pointerup",    endLoop ); 
+
+
+function loop( func, steps=0 ) {
+	
+	// set looping state if this is the first call and steps == 0
+	looping |= steps == 0;
+
+	// if we have exited the looping state then do nothing
+	if( !looping ) return; 
+	
+	// call the looped func
+	func();
+	
+	// loop again after a delay with 1 extra step
+	const delay = 500 / (steps + 1);
+	loopTimeout = setTimeout( () => loop(func, ++steps), delay );
+}
+
+function endLoop() {
+	clearTimeout( loopTimeout );
+	looping = false;
+}
 
 
 function undo() {

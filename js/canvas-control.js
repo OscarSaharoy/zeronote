@@ -61,18 +61,16 @@ let resetTimeout = null;
 // function that resets the canvas control state
 function resetState() {
 	
-	if( strokeSteps > 0 )
-		strokeEnd();
-
 	activePointers = {};
 	skip1Frame = false;
 	strokeSteps = 0;
 	erasing = false;
+	strokeEnd();
 }
 
 
 function pointerdown( event ) {
-
+	
     // if the event's target element is in the clickables array then return
     if( clickables.reduce( (result, elm) => result || elm.contains(event.target), false) ) return;
 
@@ -147,17 +145,18 @@ function pointerup( event ) {
     // a step change in pan position
     skip1Frame = true;
 
-	// if this is the last pointer up, the stroke is done
-	if( !erasing && strokeSteps > 0 && !Object.keys(activePointers).length ) {
-		strokeSteps = 0;
-		strokeEnd();
-	}
-	
 	// if we are erasing then stop erasing
 	if( erasing && !Object.keys(activePointers).length ) {
 		erasing = false;
 		resetErase();
 	}
+
+	// if this is the last pointer up, the stroke is done
+	if( strokeSteps > 0 && !Object.keys(activePointers).length ) {
+		strokeSteps = 0;
+		strokeEnd();
+	}
+	
 }
 
 // pan/zoom loop

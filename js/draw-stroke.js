@@ -33,6 +33,8 @@ export function strokeCancel() {
 
 export function strokeEnd() {
 
+	if( currentStroke === null ) return;
+
 	// rebase the action stack to branch from the current state
 	// and add the new stroke drawn
 	rebaseActions();
