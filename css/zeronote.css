@@ -33,6 +33,12 @@ svg#canvas {
 
 #toolbox img, #toolbox svg {
 	overflow: visible;
+	user-drag: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 #toolbox #logo {

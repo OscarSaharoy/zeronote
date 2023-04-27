@@ -23,8 +23,8 @@
 
 	<div id="toolbox" oncontextmenu="return false;">
 		<img src="svg/logo.svg" id="logo" title="ZeroNote 1.1"> </img>
-		<img src="svg/undo.svg" id="undo" class="button" title="undo"></img>
-		<img src="svg/redo.svg" id="redo" class="button" title="redo"></img>
+		<img src="svg/undo.svg" id="undo" class="button" title="undo" draggable="false" (dragstart)="false;"></img>
+		<img src="svg/redo.svg" id="redo" class="button" title="redo" draggable="false" (dragstart)="false;"></img>
 		<input id="colour-picker-input" type="color"> </input>
 		<label for="colour-picker-input" title="colour" class="button">
 			<svg viewBox="7.481454 4.4285422 35.127454 32.520325" id="pen" >
