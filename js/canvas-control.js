@@ -166,8 +166,8 @@ function pointerup( event ) {
     // call again next frame
     requestAnimationFrame( panAndZoom );
     
-    // if theres no active pointers or a stroke is in progress do nothing
-    if( !Object.keys(activePointers).length || strokeSteps != 0 ) return;
+    // if theres no active pointers or a stroke is in progress or we are erasing do nothing
+    if( !Object.keys(activePointers).length || strokeSteps != 0 || erasing ) return;
     
     // get the mean pointer and spread
     const pointers = Object.values( activePointers );
