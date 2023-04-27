@@ -118,6 +118,7 @@ function pointermove( event ) {
 	// cancel the stroke and start erasing
 	if( !erasing && strokeSteps > 0 && (event.buttons > 1 || eraseButtonClicked) ) {
 		erasing = true;
+		strokeSteps = 0;
 		strokeCancel();
 	}
 
