@@ -22,7 +22,7 @@
 	</svg>
 
 	<div id="toolbox" oncontextmenu="return false;">
-		<img src="svg/logo.svg" id="logo" title="ZeroNote 1.1"> </img>
+		<img src="svg/logo.svg" id="logo" title="ZeroNote 1.1" draggable="false" (dragstart)="false;"> </img>
 		<img src="svg/undo.svg" id="undo" class="button" title="undo" draggable="false" (dragstart)="false;"></img>
 		<img src="svg/redo.svg" id="redo" class="button" title="redo" draggable="false" (dragstart)="false;"></img>
 		<input id="colour-picker-input" type="color"> </input>
@@ -39,7 +39,7 @@
 		<label for="upload">
 			<img src="svg/load.svg" id="load" class="button" title="load"></img>
 		</label>
-		<!-- <img src="svg/grab.svg" id="grab"></img> -->
+		<img src="svg/grip.svg" id="grip" draggable="false" (dragstart)="false;"></img>
 	</div>
 </div>
 
@@ -49,6 +49,7 @@
 <script type="module" src="js/colour-picker.js"> </script>
 <script type="module" src="js/reload-prompt.js"> </script>
 <script type="module" src="js/canvas-control.js"> </script>
+<script type="module" src="js/move-toolbox.js"> </script>
 
 <script id="install-service-worker">
 	if( "serviceWorker" in navigator )

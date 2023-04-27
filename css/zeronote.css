@@ -23,8 +23,8 @@ svg#canvas {
 	position: absolute;
 	padding: 1rem;
 	padding-bottom: 1.6rem;
-	left: 1rem;
-	top: 1rem;
+	left: 0;
+	top: 0;
 	background-color: #18181866;
 	justify-items: center;
 	border-radius: 1rem;
@@ -44,6 +44,8 @@ svg#canvas {
 #toolbox #logo {
 	width: 4rem;
 	margin-bottom: 0.2rem;
+	margin-top: 0.1rem;
+	cursor: grab;
 }
 
 #toolbox .button, #toolbox label {
@@ -61,6 +63,9 @@ svg#canvas {
 	transform: scale(0.95);
 }
 
+#toolbox #redo {
+	margin-top: -0.48rem;
+}
 #toolbox #colour-picker-input {
 	display: none;
 }
@@ -76,9 +81,9 @@ svg#canvas {
 	display: none;
 }
 
-#toolbox #grab {
-	margin-top: .5rem;
+#toolbox #grip {
+	margin-top: 0.2rem;
 	width: 1.4rem;
 	cursor: grab;
-	filter: brightness(70%);
+	filter: opacity(50%);
 }
