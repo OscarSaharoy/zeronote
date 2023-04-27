@@ -1,7 +1,7 @@
 // Oscar Saharoy 2023
 
 
-const cacheName = "zeronote-v1";
+const cacheName = "zeronote-v2";
 const contentToCache = [
 	"./",
 	"./serviceWorker.js",
@@ -14,7 +14,7 @@ const contentToCache = [
 	"./svg/save.svg",
 	"./svg/saved.svg",
 	"./svg/erase.svg",
-	"./svg/grab.svg",
+	"./svg/grip.svg",
 	"./svg/logo.svg",
 	"./svg/load.svg",
 	"./js/utility.js",
@@ -28,12 +28,14 @@ const contentToCache = [
 	"./js/canvas-control.js",
 	"./js/stroke.js",
 	"./js/draw-with-touch.js",
+	"./js/move-toolbox.js",
 	"./LICENSE.md",
 ];
 
 
-self.addEventListener( "install", e => e.waitUntil(   install(e) ) );
-self.addEventListener( "fetch",   e => e.respondWith( fetch(e)   ) );
+self.addEventListener( "install",  e => e.waitUntil(   install(e)        ) );
+self.addEventListener( "activate", e => e.waitUntil(   deleteOldCaches() ) );
+self.addEventListener( "fetch",    e => e.respondWith( fetch(e)          ) );
 
 
 async function install( e ) {
@@ -42,6 +44,14 @@ async function install( e ) {
 	console.log( "[serviceWorker.js] Caching content" );
 	await cache.addAll(contentToCache);
 }
+
+async function deleteOldCaches() {
+
+	const keyList = await caches.keys();
+	const cachesToDelete = keyList.filter( key => key != cacheName );
+
+	await Promise.all( cachesToDelete.map( async key => await caches.delete(key) ) );
+};
 
 
 async function fetch( e ) {
@@ -58,4 +68,5 @@ async function fetch( e ) {
 
 	return response;
 }
+
 
