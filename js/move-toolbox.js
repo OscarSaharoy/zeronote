@@ -41,8 +41,6 @@ function gripMove( event ) {
 	dx = clamp( dx, 0, window.innerWidth  - toolbox.clientWidth  );
 	dy = clamp( dy, 0, window.innerHeight - toolbox.clientHeight );
 
-	console.log( event.movementX, event.movementY );
-
 	toolbox.style.transform = `translateX(${dx}px) translateY(${dy}px)`;
 }
 

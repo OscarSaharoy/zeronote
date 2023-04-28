@@ -29,6 +29,7 @@ svg#canvas {
 	justify-items: center;
 	border-radius: 1rem;
 	user-select: none;
+	touch-action: none;
 }
 
 #toolbox img, #toolbox svg {
