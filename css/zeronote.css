@@ -52,8 +52,8 @@ svg#canvas {
 	height: 2rem;
 	cursor: pointer;
 	transition: transform 0.08s;
-	padding: 0.4rem;
-	margin: -0.4rem;
+	padding: 0.4rem 1rem;
+	margin: -0.4rem -1rem;
 }
 #toolbox .button:hover {
 	transform: scale(1.1);
@@ -86,4 +86,6 @@ svg#canvas {
 	width: 1.4rem;
 	cursor: grab;
 	filter: opacity(50%);
+	padding: 0.4rem 1rem;
+	margin: -0.4rem -1rem;
 }
