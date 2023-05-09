@@ -42,6 +42,13 @@ const getPointerSpread = (positions, mean) => positions.reduce( (acc, val) => ac
 let canvasScale  = 1;
 let canvasOffset = { x: 0, y: 0 };
 
+export const adjustCanvasOffset = (x, y) => {
+	canvasOffset.x += clamp( x, -100, 100 ) * canvasScale;
+	canvasOffset.y += clamp( y, -100, 100 ) * canvasScale;
+	updateCanvasViewBox();
+}
+	
+
 // link all the pointer events
 document.addEventListener( "pointerdown",  pointerdown );
 document.addEventListener( "pointerup",    pointerup   );
@@ -179,8 +186,9 @@ function pointerup( event ) {
     if( !skip1Frame ) {
 
         // shift the container by the pointer movement
-        canvasOffset.x -= clamp( meanPointer.x - lastMeanPointer.x, -100, 100 ) * canvasScale;
-        canvasOffset.y -= clamp( meanPointer.y - lastMeanPointer.y, -100, 100 ) * canvasScale;
+		adjustCanvasOffset(
+			lastMeanPointer.x - meanPointer.x, 
+			lastMeanPointer.y - meanPointer.y );
 
 		const scrollDelta = clamp( (lastPointerSpread - pointerSpread) * 2.7, -100, 100 );
         

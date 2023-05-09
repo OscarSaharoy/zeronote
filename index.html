@@ -33,12 +33,13 @@
 					d="M 13.55,18.24 26.21,30.90 M 17.15,14.63 29.82,27.29 m -21.38,-3.95 8.71,-8.71 9.77,-3.98 2.47,-2.47 6.88,6.92 -2.47,2.47 -3.98,9.72 -8.71,8.71" />
 			</svg>
 		</label>
-		<img src="svg/erase.svg" id="erase" class="button" title="erase"></img>
-		<img src="svg/save.svg" id="save" class="button" title="save"></img>
+		<img src="svg/erase.svg" id="erase" class="button" title="erase" draggable="false" (dragstart)="false;"></img>
+		<img src="svg/save.svg" id="save" class="button" title="save" draggable="false" (dragstart)="false;"></img>
 		<input type="file" id="upload" />
 		<label for="upload">
 			<img src="svg/load.svg" id="load" class="button" title="load"></img>
 		</label>
+		<img src="svg/pan.svg" id="pan" class="button" title="drag to pan" draggable="false" (dragstart)="false;"></img>
 		<img src="svg/grip.svg" id="grip" draggable="false" (dragstart)="false;"></img>
 	</div>
 </div>
@@ -50,6 +51,7 @@
 <script type="module" src="js/reload-prompt.js"> </script>
 <script type="module" src="js/canvas-control.js"> </script>
 <script type="module" src="js/move-toolbox.js"> </script>
+<script type="module" src="js/drag-pan.js"> </script>
 
 <script id="install-service-worker">
 	if( "serviceWorker" in navigator )

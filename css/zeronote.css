@@ -82,6 +82,10 @@ svg#canvas {
 	display: none;
 }
 
+#toolbox #pan {
+	cursor: grab;
+}
+
 #toolbox #grip {
 	margin-top: 0.2rem;
 	width: 1.4rem;
