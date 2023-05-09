@@ -20,6 +20,9 @@ window.addEventListener( "pointerleave", () => clearTimeout( loopTimeout ) );
 window.addEventListener( "pointerup",    () => clearTimeout( loopTimeout ) );
 window.addEventListener( "touchend",     () => clearTimeout( loopTimeout ) );
 
+window.addEventListener( "keydown", evt => evt.key == "z" && undo() );
+window.addEventListener( "keydown", evt => evt.key == "Z" && redo() );
+
 
 function loop( func, steps=0 ) {
 	
