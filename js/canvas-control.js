@@ -88,11 +88,11 @@ function pointerdown( event ) {
 	const ignoreAs1Touch = event.pointerType == "touch" && !drawWithTouch;
 
 	// if this is the first pointer and it's not an ignored touch, assume we are starting to draw a stroke
-	if( !Object.keys(activePointers).length && !ignoreAs1Touch )
+	if( !Object.keys(activePointers).length && !ignoreAs1Touch && !event.shiftKey )
 		strokeSteps = 1;
 
-	// if it's the first pointer and it's not an ignored touch, and it's not an erase stroke, call strokeStart
-	if( !Object.keys(activePointers).length && !ignoreAs1Touch && !(event.buttons > 1 || eraseButtonClicked) )
+	// if it's the first pointer and it's not an ignored touch, and it's not an erase stroke, and the ctrl key isn't pressed, call strokeStart
+	if( !Object.keys(activePointers).length && !( ignoreAs1Touch || event.buttons > 1 || eraseButtonClicked || event.shiftKey ) )
 		strokeStart( clientCoordsToSVG(eventClientCoords) );
 
     // add the pointer to activePointers
@@ -158,6 +158,7 @@ function pointerup( event ) {
 		strokeEnd();
 	}
 	
+	svgCanvas.style.cursor = "auto";
 }
 
 // pan/zoom loop
@@ -168,6 +169,9 @@ function pointerup( event ) {
     
     // if theres no active pointers or a stroke is in progress or we are erasing do nothing
     if( !Object.keys(activePointers).length || strokeSteps != 0 || erasing ) return;
+
+	// set the pointer to grabbing
+	svgCanvas.style.cursor = "grabbing";
     
     // get the mean pointer and spread
     const pointers = Object.values( activePointers );
